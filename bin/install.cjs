@@ -161,18 +161,23 @@ async function installCli() {
   logStep("3/4", "安装 ziwei CLI...");
 
   try {
-    // Check if already installed
+    // Check if already installed with correct version
     try {
-      execSync("which ziwei", { stdio: "ignore" });
-      logSuccess("ziwei CLI 已安装");
-      return true;
+      const version = execSync("ziwei --version", { encoding: "utf8" }).trim();
+      const pkg = require(path.join(PACKAGE_ROOT, "package.json"));
+      if (version === pkg.version) {
+        logSuccess(`ziwei CLI 已安装 (v${version})`);
+        return true;
+      }
+      logInfo(`当前版本 ${version}，升级到 ${pkg.version}...`);
     } catch {
       // Not installed, proceed
     }
 
-    // Try npm link from package root
-    logInfo("正在全局安装 ziwei CLI...");
-    execSync("npm link", { cwd: PACKAGE_ROOT, stdio: "inherit" });
+    // Global install ensures dependencies are properly resolved
+    // and persists after npx temp dir is cleaned up
+    logInfo("正在全局安装 ziwei CLI 及依赖...");
+    execSync("npm install -g ziwei-cli", { stdio: "inherit" });
     logSuccess("ziwei CLI 安装成功");
 
     // Verify
@@ -182,7 +187,7 @@ async function installCli() {
     return true;
   } catch (error) {
     logError(`CLI 安装失败: ${error.message}`);
-    logInfo("你可以手动运行: cd " + PACKAGE_ROOT + " && npm link");
+    logInfo("你可以手动运行: npm install -g ziwei-cli");
     return false;
   }
 }
@@ -197,15 +202,16 @@ ${color("green", "━━━━━━━━━━━━━━━━━━━━�
 
 ${color("cyan", "CLI 命令:")}
   ziwei palace --palace 命宫 --date 1990-05-15 --time 10:30 --gender 男 --city 北京
-  ziwei palace --palace 官禄宫 --scope yearly --year 2025 ...
+  ziwei bazi --date 1990-05-15 --time 10:30 --gender 男
+  ziwei calendar
 
 ${color("cyan", "Skill 触发词:")}
-  算命、看命、命盘、运势、合盘、紫微、流年、大限
+  算命、看命、命盘、运势、合盘、紫微、八字、流年、大限
 
 ${color("yellow", "在 Claude Code / OpenClaw 中试试:")}
   "帮我算命"
   "看看我今年的运势"
-  "我和对方合适吗"
+  "帮我排个八字"
 
 ${color("dim", "重启 Claude Code 会话后 skill 将自动加载")}
 `);
