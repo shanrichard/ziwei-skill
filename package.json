@@ -1,0 +1,37 @@
+{
+  "name": "ziwei-cli",
+  "version": "1.0.0",
+  "description": "紫微斗数命理分析 CLI 工具 - Claude Code / OpenClaw Skill",
+  "type": "module",
+  "main": "bin/ziwei.js",
+  "bin": {
+    "ziwei-cli": "./bin/install.cjs",
+    "ziwei": "./bin/ziwei.js"
+  },
+  "scripts": {
+    "start": "node bin/ziwei.js",
+    "postinstall": "node bin/install.cjs || true"
+  },
+  "keywords": [
+    "紫微斗数",
+    "算命",
+    "命理",
+    "astrology",
+    "ziwei",
+    "fortune",
+    "claude-code",
+    "openclaw",
+    "skill"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^12.0.0",
+    "iztro": "^2.5.3",
+    "lunar-javascript": "^1.6.12"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/ziwei-skill"
+  }
+}
