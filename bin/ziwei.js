@@ -7,6 +7,7 @@
 import { Command } from 'commander';
 import { executePalace } from '../lib/commands/palace.js';
 import { executeSynastry, executeSynastryYearly } from '../lib/commands/synastry.js';
+import { executeBazi, executeCalendar } from '../lib/commands/bazi.js';
 
 const program = new Command();
 
@@ -120,6 +121,30 @@ synastry
       bLeap: options.bLeap,
       year: parseInt(options.year)
     });
+    console.log(JSON.stringify(result, null, 2));
+  });
+
+// 八字排盘命令
+program
+  .command('bazi')
+  .description('八字排盘（四柱、十神、大运、神煞、刑冲合会）')
+  .requiredOption('--date <date>', '出生日期 (YYYY-MM-DD)')
+  .requiredOption('--time <time>', '出生时间 (HH:MM)')
+  .requiredOption('--gender <gender>', '性别 (男/女)')
+  .option('--lunar', '农历日期', false)
+  .option('--sect <sect>', '早晚子时 (1=次日/2=当日)', '2')
+  .action(async (options) => {
+    const result = await executeBazi(options);
+    console.log(JSON.stringify(result, null, 2));
+  });
+
+// 黄历查询命令
+program
+  .command('calendar')
+  .description('黄历查询（农历、干支、节气、生肖）')
+  .option('--date <date>', '阳历日期 (YYYY-MM-DD)，不传则为当天')
+  .action(async (options) => {
+    const result = await executeCalendar(options);
     console.log(JSON.stringify(result, null, 2));
   });
 

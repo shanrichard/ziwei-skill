@@ -26,9 +26,11 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "cantian-tymext": "^0.0.21",
     "commander": "^12.0.0",
     "iztro": "^2.5.3",
-    "lunar-javascript": "^1.6.12"
+    "lunar-javascript": "^1.6.12",
+    "tyme4ts": "^1.4.2"
   },
   "repository": {
     "type": "git",
